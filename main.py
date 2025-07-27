@@ -1,8 +1,10 @@
-from openai import OpenAI
+
 import sys
 from typing import List
 import time
 import datetime
+import configparser
+from openai import OpenAI
 
 
 def kimi_rpm_handle(call_func, *args, **kwargs):
@@ -20,10 +22,21 @@ def kimi_rpm_handle(call_func, *args, **kwargs):
                 print(f"[Kimi] 发生错误：{e}")
                 raise
 
+
+# 从配置文件读取大模型相关配置
+def load_config(config_path="kimi_config.ini"):
+    config = configparser.ConfigParser()
+    config.read(config_path, encoding="utf-8")
+    section = config["kimi"]
+    return section["api_key"], section["base_url"], section["model"]
+
+# 加载配置
+api_key, base_url, model_name = load_config()
+
 # 配置 Moonshot Kimi API
 client = OpenAI(
-    api_key="Your_api_key",  # 替换为你的 API Key
-    base_url="https://api.moonshot.cn/v1",
+    api_key=api_key,
+    base_url=base_url,
 )
 
 def kimi_generate_titles(text_list):
@@ -45,7 +58,7 @@ def kimi_generate_titles(text_list):
         )
         def call():
             return client.chat.completions.create(
-                model = "kimi-k2-0711-preview",
+                model = model_name,
                 messages = [
                     {"role": "system", "content": "你是 Kimi，由 Moonshot AI 提供的人工智能助手。"},
                     {"role": "user", "content": prompt}
@@ -91,7 +104,7 @@ def kimi_proofread_segments(text_list):
 
         def call():
             return client.chat.completions.create(
-                model = "kimi-k2-0711-preview",
+                model = model_name,
                 messages = [
                     {"role": "system", "content": "你是 Kimi，由 Moonshot AI 提供的人工智能助手。"},
                     {"role": "user", "content": prompt}
