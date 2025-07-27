@@ -12,6 +12,8 @@
 - **格式化输出**：输出“时间+标题+正文”格式的文本，并自动保存为 txt 文件。
 
 ## 使用方法
+
+### 方式一：直接运行 Python 脚本
 1. **安装依赖**
    
    需先安装 [openai](https://pypi.org/project/openai/) Python SDK：
@@ -22,7 +24,16 @@
 
 2. **配置 API Key**
    
-   在 `main.py` 中，将 `api_key="Your_api_key"` 替换为你自己的 Moonshot Kimi API Key。
+   在项目根目录下新建 `kimi_config.ini` 文件，内容如下：
+   
+   ```ini
+   [kimi]
+   api_key = 你的API_KEY
+   base_url = https://api.moonshot.cn/v1
+   model = kimi-k2-0711-preview
+   ```
+   
+   > 请将 `你的API_KEY` 替换为你自己的 Moonshot Kimi API Key。
 
 3. **运行脚本**
    
@@ -49,10 +60,30 @@
     ...
      ```
 
+### 方式二：使用打包好的 EXE 程序
+
+1. **下载文件**
+   - 下载打包好的 `main.exe` 和 `kimi_config.ini` 到同一目录。
+
+2. **配置 API Key**
+   - 用文本编辑器打开 `kimi_config.ini`，将 `api_key` 修改为你自己的 Moonshot Kimi API Key。
+
+3. **运行 EXE**
+   - 将待处理的 SRT 文件放在同一目录下。
+   - 在命令行中运行：
+     ```powershell
+     main.exe <srt文件路径>
+     ```
+     例如：
+     ```powershell
+     main.exe example.srt
+     ```
+   - 处理完成后，结果会输出到控制台，并自动保存为 `kimi_output_时间戳.txt` 文件。
+
 ## 主要流程
 1. 读取 SRT 文件
 2. 解析为结构化字幕数据
-3. 合并为指定长度的段落
+3. 合并为指定长度的段落(约500字)
 4. 为每段生成标题
 5. 校对每段正文
 6. 输出并保存结果
@@ -66,4 +97,4 @@
 - openai >= 1.0.0
 
 ## 联系方式
-如有问题或建议，请联系作者。
+如有问题或建议，请提issue。
