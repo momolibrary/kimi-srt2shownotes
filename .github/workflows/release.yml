@@ -25,17 +25,29 @@ jobs:
 
       - name: Build EXE
         run: |
-          pyinstaller --onefile main.py
+          pyinstaller --onefile --name srt2shownotes main.py
+
+      - name: Build GUI EXE
+        run: |
+          pyinstaller --onefile --name srt2shownotes_gui main_gui.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: main-exe
-          path: dist/main.exe
+          name: srt2shownotes-exe
+          path: dist/srt2shownotes.exe
+
+      - name: Upload GUI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: srt2shownotes-gui-exe
+          path: dist/srt2shownotes_gui.exe
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/main.exe
+          files: |
+            dist/srt2shownotes.exe
+            dist/srt2shownotes_gui.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
