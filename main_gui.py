@@ -137,7 +137,7 @@ class CancellableKimiWrapper:
             # 使用重试机制
             import time
             retry_count = 0
-            max_retries = 3
+            max_retries = 200
             
             while retry_count < max_retries:
                 try:
