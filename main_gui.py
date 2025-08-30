@@ -18,6 +18,9 @@ from main import (
     SubtitleItem, MergedSegment, load_config
 )
 
+# 常量定义
+MAX_RETRIES = 300
+
 
 class CancellableKimiWrapper:
     """可取消的Kimi API包装器"""
@@ -137,7 +140,7 @@ class CancellableKimiWrapper:
             # 使用重试机制
             import time
             retry_count = 0
-            max_retries = 200
+            max_retries = MAX_RETRIES
             
             while retry_count < max_retries:
                 try:
@@ -227,7 +230,7 @@ class CancellableKimiWrapper:
             # 使用重试机制
             import time
             retry_count = 0
-            max_retries = 3
+            max_retries = MAX_RETRIES
             
             while retry_count < max_retries:
                 try:
